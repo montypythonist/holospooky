@@ -57,7 +57,7 @@ def joystick():
                     cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=1000)
                 if event.button == 14:
                     cli.drive_wheels(lwheel_speed=1000, rwheel_speed=-1000)
-                # Arrow buttons control direction of cozmo. Forward and backward move the cozmo to their respective directions,
+                # CONSOLEArrow buttons control direction of cozmo. Forward and backward move the cozmo to their respective directions,
                 # but left and right only rotate the cozmo. There is no net movement in any direction when rotating.
 
             if event.type == pygame.JOYBUTTONUP:
@@ -79,3 +79,33 @@ def webcam():
         # press "q" key to close camera
     cap.release()
     cv2.destroyAllWindows()
+
+def test_joystick():
+    # Run this program while connected to your controller to test controls
+    pygame.init()
+    pygame.joystick.init()
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+    if joystick.get_init():
+        print("Controller connected! [TEST MODE] Begin testing")
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.JOYAXISMOTION:
+                print("Axis:", event.axis, "Value:", event.value)
+            elif event.type == pygame.JOYBUTTONDOWN:
+                print("Button:", event.button, "pressed")
+            elif event.type == pygame.JOYBUTTONUP:
+                print("Button:", event.button, "released")
+
+def keyboard():
+    # for using your keyboard to control Cozmo
+    if keypress == "up" or event.button == "w":
+        cli.drive_wheels(lwheel_speed=1000, rwheel_speed=1000)
+    if keypress == "down" or event.button == "s":
+        cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=-1000)
+    if keypress == "right" or event.button == "a":
+        cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=1000)
+    if keypress == "left" or event.button == "d":
+        cli.drive_wheels(lwheel_speed=1000, rwheel_speed=-1000)
+        # KEYBOARD: WASD and arrow controls both move the Cozmo. Forward and backward move the cozmo to their respective directions,
+        # but left and right only rotate the cozmo. There is no net movement in any direction when rotating.

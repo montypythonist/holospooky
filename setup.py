@@ -6,9 +6,9 @@ setup(
     description="Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK",
     #long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    author="Julia Al-Otoom, @D3M0NG1RL17 on GitHub",
-    author_email="julia.alotoom@icloud.com",
-    url="https://github.com/D3M0NG1RL17/holospooky",
+    author="Julia Al-Otoom",
+    author_email="julia.holospooky@gmail.com",
+    url="https://github.com/julia-holospooky/holospooky",
     packages=find_packages(),
     install_requires=[],
     classifiers=[

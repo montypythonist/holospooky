@@ -1,5 +1,0 @@
-pycozmo
-pygame
-cv2
-os
-setuptools
