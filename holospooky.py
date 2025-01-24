@@ -1,9 +1,11 @@
-#HOLOSPOOKY - cool stuff to do with your old Cozmo!! :3
+# HOLOSPOOKY - cool stuff to do with your old Cozmo!! :3
 
 import pycozmo
 import pygame
 import cv2
 import sys
+
+# TODO: #4 update wiki
 
 def deploy():
     # Establish connection to Cozmo
@@ -18,17 +20,20 @@ def deploy():
         sys.exit()
     print("Robot code deployed...") 
 
-def joystick():
-    # PYGAME CODE - For using a controller to control Cozmo
+def connect_joystick():
+    # stabilizes connection from controller to pygame
     pygame.init()
     pygame.joystick.init()
     joystick = pygame.joystick.Joystick(0)
     joystick.init()
-    # stabilizes connection from controller to pygame
     if joystick.get_init():
         print("Controller connected!")
     else:
         print("Controller not connected. Try checking Bluetooth connection, wired connection, battery life, or controller functionality.")
+
+# TODO: #1 fix controls for arm and head movement
+def joystick():
+    # PYGAME CODE - For using a controller to control Cozmo
     while True:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
@@ -65,6 +70,7 @@ def joystick():
                     cli.drive_wheels(lwheel_speed=0, rwheel_speed=0)
                     # releasing any of the arrow controls will pause all rotation/direction movement
 
+# TODO: #2 find cozmo camera module
 def webcam():
     # WIP - Accessing cozmo's camera and displaying it on computer
     cap = cv2.VideoCapture(0)
@@ -97,6 +103,7 @@ def test_joystick():
             elif event.type == pygame.JOYBUTTONUP:
                 print("Button:", event.button, "released")
 
+# TODO: #3 finalize keyboard controls
 def keyboard():
     # for using your keyboard to control Cozmo
     if keypress == "up" or event.button == "w":
