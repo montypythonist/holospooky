@@ -2,70 +2,94 @@
 
 import pycozmo
 import pygame
-from pygame.locals import *
-from sys import exit
-
+import cv2
+import numpy as np
 
 def deploy():
-    # Establish connection to Cozmo
-    global cli
-    cli = pycozmo.Client()
-    cli.start()
-    cli.connect()
-    try:
-        cli.wait_for_robot()
-    except:
-        print("Failed to connect to Cozmo. Check if you are successfully connected to the robot WiFi")
-        exit()
-    print("Robot code deployed...") 
-
-
-def joystick():
-    # PYGAME CODE - For using a controller to control Cozmo
     pygame.init()
     pygame.joystick.init()
     joystick = pygame.joystick.Joystick(0)
     joystick.init()
+
     if joystick.get_init():
         print("Controller connected!")
+        buttonpress = True
     else:
-        print("Controller not connected. Try checking Bluetooth connection, wired connection, battery life, or controller functionality.")
-        exit()
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.JOYAXISMOTION:
-                if event.axis == 1:
-                    if event.value < 0.5:
-                        cli.set_head_angle(angle=1000, accel=1000)
-                    if event.value > -0.5:
-                        cli.set_head_angle(angle=-1000, accel=1000)
-                # Axis 1 (AKA left joystick) controlls head movement. Up and down move the head angle to their respective directions.
-                # Attempting to use Axis 0 (moving the left joystick left and right) will not do anything
+        print("Controller not connected. Try checking Bluetooth connection, wired connection, battery life, controller functionality, or controller brand (ONLY PLAYSTATION/XBOX WORKS WITH HOLOSPOOKY)")
+        return  # Exit if no controller is detected
 
-                if event.axis == 3:
-                    if event.value < 0:
-                        cli.set_lift_height(height=1000, accel=1000, duration=0.1)
-                    if event.value > 0:
-                        cli.set_lift_height(height=-1000, accel=1000, duration=0.1)
-                # Axis 3 (AKA right joystick) controlls arm movement. Up and down move the arm to their respective directions.
-                # Attempting to use Axis 2 (moving the right joystick left and right) will not do anything
+    # Last image, received from the robot.
+    last_im = None
 
-            if event.type == pygame.JOYBUTTONDOWN:
-                if event.button == 11:
-                    cli.drive_wheels(lwheel_speed=1000, rwheel_speed=1000)
-                if event.button == 12:
-                    cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=-1000)
-                if event.button == 13:
-                    cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=1000)
-                if event.button == 14:
-                    cli.drive_wheels(lwheel_speed=1000, rwheel_speed=-1000)
-                # Arrow buttons control direction of cozmo. Forward and backward move the cozmo to their respective directions,
-                # but left and right only rotate the cozmo. There is no net movement in any direction when rotating.
+    def on_camera_image(cli, new_im):
+        """ Handle new images, coming from the robot. """
+        nonlocal last_im  # Fix variable scope issue
+        last_im = new_im
 
-            if event.type == pygame.JOYBUTTONUP:
-                if event.button <= 14 and event.button >= 11:
-                    cli.drive_wheels(lwheel_speed=0, rwheel_speed=0)
-                    # releasing any of the arrow controls will pause all rotation/direction movement
+    with pycozmo.connect(enable_procedural_face=False) as cli:
+        # Raise head.
+        angle = (pycozmo.robot.MAX_HEAD_ANGLE.radians - pycozmo.robot.MIN_HEAD_ANGLE.radians) / 2.0
+        cli.set_head_angle(angle)
+
+        # Register to receive new camera images.
+        cli.add_handler(pycozmo.event.EvtNewRawCameraImage, on_camera_image)
+
+        # Enable camera.
+        cli.enable_camera(enable=True, color=True)
+
+        # Run at Cozmo’s native camera FPS (14 FPS).
+        timer = pycozmo.util.FPSTimer(14)
+    
+        while True:
+            if last_im:
+                # Convert PIL image to OpenCV format
+                opencv_image = np.array(last_im)  # Convert PIL Image to numpy array
+                opencv_image = cv2.cvtColor(opencv_image, cv2.COLOR_RGB2BGR)  # Convert RGB to BGR for OpenCV
+                # Set the OpenCV window to fullscreen
+                cv2.namedWindow("Cozmo Camera", cv2.WND_PROP_FULLSCREEN)
+                cv2.setWindowProperty("Cozmo Camera", cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+
+                # Show the image in a window
+                cv2.imshow("Cozmo Camera", opencv_image)
+
+            # Break loop if 'q' is pressed
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            timer.sleep()
+
+            for event in pygame.event.get():
+                if event.type == pygame.JOYAXISMOTION:  # JOYSTICKS
+                    if event.axis == 1:  # LEFT JOYSTICK
+                        if event.value < -0.5:
+                            cli.set_head_angle(angle=100, accel=100)
+                        if event.value > 0.5:
+                            cli.set_head_angle(angle=-100, accel=100)
+                    if event.axis == 0:
+                        cli.set_head_angle(angle=0, accel=100)
+
+                    if event.axis == 3:  # RIGHT JOYSTICK
+                        if event.value < -0.5:
+                            cli.set_lift_height(height=100, accel=100)
+                        if event.value > 0.5:
+                            cli.set_lift_height(height=-100, accel=100)
+                            
+                if buttonpress:  # ARROW BUTTONS
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        if event.button == 11:
+                            cli.drive_wheels(lwheel_speed=1000, rwheel_speed=1000)
+                        if event.button == 12:
+                            cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=-1000)
+                        if event.button == 13:
+                            cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=1000)
+                        if event.button == 14:
+                            cli.drive_wheels(lwheel_speed=1000, rwheel_speed=-1000)
+
+                    if event.type == pygame.JOYBUTTONUP:
+                        if 11 <= event.button <= 14:
+                            cli.drive_wheels(lwheel_speed=0, rwheel_speed=0)
+
+        # Cleanup OpenCV window when finished
+        cv2.destroyAllWindows()
 
 def joystick_test():
     # Run this program while connected to your controller to test controls
@@ -75,6 +99,7 @@ def joystick_test():
     joystick.init()
     if joystick.get_init():
         print("Controller connected! [TEST MODE] Begin testing")
+        
     while True:
         for event in pygame.event.get():
             if event.type == pygame.JOYAXISMOTION:
@@ -83,52 +108,3 @@ def joystick_test():
                 print("Button:", event.button, "pressed")
             elif event.type == pygame.JOYBUTTONUP:
                 print("Button:", event.button, "released")
-
-def keyboard():
-    # for using your keyboard to control Cozmo
-    pygame.init()
-    screen = pygame.display.set_mode((640, 480))
-    pygame.display.set_caption("Keyboard Input (Must be active here for keyboard usage)")
-    screen.fill((0, 0, 0))
-    pygame.display.flip()
-    while True:
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.key == K_w or event.key == K_UP:
-                    cli.drive_wheels(lwheel_speed=1000, rwheel_speed=1000)
-                elif event.key == K_a or event.key == K_LEFT:
-                    cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=1000)
-                elif event.key == K_s or event.key == K_DOWN:
-                    cli.drive_wheels(lwheel_speed=-1000, rwheel_speed=-1000)
-                elif event.key == K_d or event.key == K_RIGHT:
-                    cli.drive_wheels(lwheel_speed=1000, rwheel_speed=-1000)
-                    # KEYBOARD: WASD and arrow controls both move the Cozmo. Forward and backward move the cozmo to their respective directions,
-                    # but left and right only rotate the cozmo. There is no net movement in any direction when rotating.
-            if event.type == KEYUP:
-                if event.key == K_w or event.key == K_a or event.key == K_s or event.key == K_d or event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
-                    cli.drive_wheels(lwheel_speed=0, rwheel_speed=0)
-
-def keyboard_test():
-    # Run this program while connected to your controller to test controls
-    pygame.init()
-    print("Keyboard input enabled!")
-    while True:
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.key == K_w or event.key == K_UP:
-                    print("Up/W Key")
-                elif event.key == K_a or event.key == K_LEFT:
-                    print("Left/A Key")
-                elif event.key == K_s or event.key == K_DOWN:
-                    print("Down/S Key")
-                elif event.key == K_d or event.key == K_RIGHT:
-                    print("Right/D Key")
-
-            if event.type == KEYUP:
-                if event.key == K_w or event.key == K_a or event.key == K_s or event.key == K_d or event.key == K_UP or event.key == K_DOWN or event.key == K_RIGHT or event.key == K_LEFT:
-                    print("Key release!")
-
-
-
-
-                    

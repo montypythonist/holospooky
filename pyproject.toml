@@ -14,4 +14,4 @@ classifiers = [
 license = { file = "LICENSE" }
 
 [project.urls]
-Homepage = "https://github.com/julia-holospooky/holospooky"
+Homepage = "https://github.com/julia-alotoom/holospooky"
