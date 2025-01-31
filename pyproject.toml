@@ -2,7 +2,7 @@
 name = "holospooky"
 version = "0.1.0"
 authors = [
-  { name = "Julia Al-Otoom", email = "julia.holospooky@gmail.com" },
+  { name = "Julia Al-Otoom", email = "julia.alotoom.contact@gmail.com" },
 ]
 description = "Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK"
 readme = "README.md"
