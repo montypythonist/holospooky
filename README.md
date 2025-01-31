@@ -3,14 +3,14 @@ Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK
 
 IMPORTANT LINKS:
 
-[GitHub - https://github.com/julia-holospooky/holospooky](https://github.com/julia-holospooky/holospooky)
+[GitHub - https://github.com/julia-alotoom/holospooky](https://github.com/julia-alotoom/holospooky)
 
-[Website - https://holospooky.carrd.co/](https://holospooky.carrd.co/)
+[Website - https://julia-alotoom.carrd.co/](https://julia-alotoom.carrd.co/)
 
-[Wiki - https://github.com/julia-holospooky/holospooky/wiki](https://github.com/julia-holospooky/holospooky/wiki)
+[Wiki - https://github.com/julia-alotoom/holospooky/wiki](https://github.com/julia-alotoom/holospooky/wiki)
 
-[YouTube - https://www.youtube.com/@julia-holospooky](https://www.youtube.com/@julia-holospooky)
+[YouTube - https://www.youtube.com/@julia-alotoom](https://www.youtube.com/@juliaalotoom)
 
-[PyPI - https://pypi.org/user/julia.holospooky/](https://pypi.org/user/julia.holospooky/)
+[PyPI - https://pypi.org/user/julia.alotoom/](https://pypi.org/user/julia.alotoom/)
 
-[Email - julia.holospooky@gmail.com](mailto:julia.holospooky@gmail.com)
+[Email - mailto:julia.alotoom.contact@gmail.com](mailto:julia.alotoom.contact@gmail.com)
