@@ -9,7 +9,7 @@ IMPORTANT LINKS:
 
 [Wiki - https://github.com/julia-alotoom/holospooky/wiki](https://github.com/julia-alotoom/holospooky/wiki)
 
-[YouTube - https://www.youtube.com/@julia-alotoom](https://www.youtube.com/@juliaalotoom)
+[YouTube - https://www.youtube.com/@juliaalotoom](https://www.youtube.com/@juliaalotoom)
 
 [PyPI - https://pypi.org/user/julia.alotoom/](https://pypi.org/user/julia.alotoom/)
 
