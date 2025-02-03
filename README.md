@@ -1,6 +1,8 @@
 # holospooky
 Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK
 
+download using `pip install holospooky` (may be pip3 instead of pip)
+
 IMPORTANT LINKS:
 
 [GitHub - https://github.com/julia-alotoom/holospooky](https://github.com/julia-alotoom/holospooky)
