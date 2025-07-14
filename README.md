@@ -3,14 +3,14 @@ Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK
 
 IMPORTANT LINKS:
 
-[GitHub - https://github.com/julia-alotoom/holospooky](https://github.com/julia-alotoom/holospooky)
+[GitHub](https://github.com/montypythonist/holospooky)
 
-[Website - https://julia-alotoom.carrd.co/](https://julia-alotoom.carrd.co/)
+[Website](https://montypythonist.carrd.co/)
 
-[Wiki - https://github.com/julia-alotoom/holospooky/wiki](https://github.com/julia-alotoom/holospooky/wiki)
+[Wiki](https://github.com/montypythonist/holospooky/wiki)
 
-[YouTube - https://www.youtube.com/@julia-alotoom](https://www.youtube.com/@juliaalotoom)
+[YouTube](https://www.youtube.com/@montypythonist)
 
-[PyPI - https://pypi.org/user/julia.alotoom/](https://pypi.org/user/julia.alotoom/)
+[PyPI](https://pypi.org/user/montypythonist/)
 
-[Email - mailto:julia.alotoom.contact@gmail.com](mailto:julia.alotoom.contact@gmail.com)
+[Email](mailto:julia.alotoom.contact@gmail.com)

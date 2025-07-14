@@ -1,8 +1,8 @@
 [project]
 name = "holospooky"
-version = "0.1.0"
+version = "1"
 authors = [
-  { name = "Julia Al-Otoom", email = "julia.alotoom.contact@gmail.com" },
+  { name = "montypythonist", email = "julia.alotoom.contact@gmail.com" },
 ]
 description = "Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK"
 readme = "README.md"
@@ -14,4 +14,4 @@ classifiers = [
 license = { file = "LICENSE" }
 
 [project.urls]
-Homepage = "https://github.com/julia-alotoom/holospooky"
+Homepage = "https://github.com/montypythonist/holospooky"
