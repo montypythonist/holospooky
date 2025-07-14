@@ -1,5 +1,5 @@
 [project]
-name = "mp-holospooky"
+name = "holospooky"
 version = "1"
 authors = [
   { name = "montypythonist", email = "julia.alotoom.contact@gmail.com" },

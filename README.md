@@ -1,8 +1,6 @@
 # holospooky
 Unofficial fixed module + pre-built programs + self-made features for Cozmo SDK
 
-```pip install mp-holospooky```
-
 IMPORTANT LINKS:
 
 [GitHub](https://github.com/montypythonist/holospooky)
