@@ -2,3 +2,5 @@ dist
 holospooky.egg-info
 .DS_Store
 no-annotation/
+pyproject.toml
+.gitignore
